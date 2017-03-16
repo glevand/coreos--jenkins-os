@@ -17,7 +17,9 @@ properties([
                choices: "0\n1"),
         string(name: 'PIPELINE_BRANCH',
                defaultValue: 'master',
-               description: 'Branch to use for fetching the pipeline jobs')
+               description: 'Branch to use for fetching the pipeline jobs'),
+        booleanParam(name: 'RUN_KOLA_GCE',
+                     defaultValue: false)
     ])
 ])
 
@@ -243,7 +245,7 @@ stage('Downstream') {
             ]
          },
         'kola-gce': {
-            if (params.BOARD == 'amd64-usr')
+            if (params.BOARD == 'amd64-usr' && params.RUN_KOLA_GCE)
                 build job: '/os/kola/gce', propagate: false, parameters: [
                     string(name: 'COREOS_OFFICIAL', value: params.COREOS_OFFICIAL),
                     string(name: 'MANIFEST_NAME', value: params.MANIFEST_NAME),
