@@ -1,7 +1,7 @@
 #!groovy
 
 properties([
-    buildDiscarder(logRotator(daysToKeepStr: '30', numToKeepStr: '50')),
+    buildDiscarder(logRotator(daysToKeepStr: '30', numToKeepStr: '5')),
 
     parameters([
         choice(name: 'BOARD',

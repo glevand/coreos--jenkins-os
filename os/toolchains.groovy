@@ -4,7 +4,7 @@ properties([
     buildDiscarder(logRotator(artifactDaysToKeepStr: '3',
                               artifactNumToKeepStr: '3',
                               daysToKeepStr: '30',
-                              numToKeepStr: '50')),
+                              numToKeepStr: '5')),
 
     parameters([
         booleanParam(name: 'USE_CACHE',
