@@ -21,7 +21,7 @@ properties([
     ])
 ])
 
-node('coreos && amd64 && sudo') {
+node('coreos && amd64 && sudo && kvm') {
     def config
     String verify_key = "./verify_key"
 
@@ -103,7 +103,7 @@ sudo cp -t chroot/usr/lib/kola/arm64 bin/arm64/*
 sudo cp -t chroot/usr/lib/kola/amd64 bin/amd64/*
 sudo cp -t chroot/usr/bin bin/[b-z]*
 
-enter sudo timeout --signal=SIGQUIT 60m kola run --board="${BOARD}" \
+enter sudo timeout --signal=SIGQUIT 60m kola run --debug --board="${BOARD}" \
                      --parallel=2 \
                      --qemu-bios="/mnt/host/source/tmp/coreos_production_qemu_uefi_efi_code.fd" \
                      --qemu-image="/mnt/host/source/tmp/coreos_production_image.bin" \
