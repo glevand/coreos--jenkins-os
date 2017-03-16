@@ -231,12 +231,25 @@ stage('Build') {
 }
 
 stage('Downstream') {
-    if (params.BOARD == 'amd64-usr')
-        build job: '../kola/gce', propagate: false, parameters: [
-            string(name: 'COREOS_OFFICIAL', value: params.COREOS_OFFICIAL),
-            string(name: 'MANIFEST_NAME', value: params.MANIFEST_NAME),
-            string(name: 'MANIFEST_REF', value: params.MANIFEST_REF),
-            string(name: 'MANIFEST_URL', value: params.MANIFEST_URL),
-            string(name: 'PIPELINE_BRANCH', value: params.PIPELINE_BRANCH)
-        ]
+    parallel failFast: false,
+        'kola-qemu': {
+            build job: '/os/kola/qemu', propagate: false, parameters: [
+                string(name: 'BOARD', value: params.BOARD),
+                string(name: 'COREOS_OFFICIAL', value: params.COREOS_OFFICIAL),
+                string(name: 'MANIFEST_NAME', value: params.MANIFEST_NAME),
+                string(name: 'MANIFEST_REF', value: params.MANIFEST_REF),
+                string(name: 'MANIFEST_URL', value: params.MANIFEST_URL),
+                string(name: 'PIPELINE_BRANCH', value: params.PIPELINE_BRANCH)
+            ]
+         },
+        'kola-gce': {
+            if (params.BOARD == 'amd64-usr')
+                build job: '/os/kola/gce', propagate: false, parameters: [
+                    string(name: 'COREOS_OFFICIAL', value: params.COREOS_OFFICIAL),
+                    string(name: 'MANIFEST_NAME', value: params.MANIFEST_NAME),
+                    string(name: 'MANIFEST_REF', value: params.MANIFEST_REF),
+                    string(name: 'MANIFEST_URL', value: params.MANIFEST_URL),
+                    string(name: 'PIPELINE_BRANCH', value: params.PIPELINE_BRANCH)
+                ]
+        }
 }

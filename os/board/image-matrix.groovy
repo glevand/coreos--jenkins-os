@@ -142,34 +142,21 @@ fi
 }
 
 stage('Downstream') {
-    parallel failFast: false,
-        'board-vm-matrix': {
-            if (false && params.COREOS_OFFICIAL == '1')
-                build job: 'sign-image', parameters: [
-                    string(name: 'BOARD', value: params.BOARD),
-                    string(name: 'MANIFEST_NAME', value: params.MANIFEST_NAME),
-                    string(name: 'MANIFEST_REF', value: params.MANIFEST_REF),
-                    string(name: 'MANIFEST_URL', value: params.MANIFEST_URL),
-                    string(name: 'PIPELINE_BRANCH', value: params.PIPELINE_BRANCH)
-                ]
-            else
-                build job: 'vm-matrix', parameters: [
-                    string(name: 'BOARD', value: params.BOARD),
-                    string(name: 'COREOS_OFFICIAL', value: params.COREOS_OFFICIAL),
-                    string(name: 'MANIFEST_NAME', value: params.MANIFEST_NAME),
-                    string(name: 'MANIFEST_REF', value: params.MANIFEST_REF),
-                    string(name: 'MANIFEST_URL', value: params.MANIFEST_URL),
-                    string(name: 'PIPELINE_BRANCH', value: params.PIPELINE_BRANCH)
-                ]
-        },
-        'kola-qemu': {
-            build job: '../kola/qemu', propagate: false, parameters: [
-                string(name: 'BOARD', value: params.BOARD),
-                string(name: 'COREOS_OFFICIAL', value: params.COREOS_OFFICIAL),
-                string(name: 'MANIFEST_NAME', value: params.MANIFEST_NAME),
-                string(name: 'MANIFEST_REF', value: params.MANIFEST_REF),
-                string(name: 'MANIFEST_URL', value: params.MANIFEST_URL),
-                string(name: 'PIPELINE_BRANCH', value: params.PIPELINE_BRANCH)
-            ]
-        }
+    if (params.COREOS_OFFICIAL == '1')
+        build job: '/os/board/sign-image', parameters: [
+            string(name: 'BOARD', value: params.BOARD),
+            string(name: 'MANIFEST_NAME', value: params.MANIFEST_NAME),
+            string(name: 'MANIFEST_REF', value: params.MANIFEST_REF),
+            string(name: 'MANIFEST_URL', value: params.MANIFEST_URL),
+            string(name: 'PIPELINE_BRANCH', value: params.PIPELINE_BRANCH)
+        ]
+    else
+        build job: '/os/board/vm-matrix', parameters: [
+            string(name: 'BOARD', value: params.BOARD),
+            string(name: 'COREOS_OFFICIAL', value: params.COREOS_OFFICIAL),
+            string(name: 'MANIFEST_NAME', value: params.MANIFEST_NAME),
+            string(name: 'MANIFEST_REF', value: params.MANIFEST_REF),
+            string(name: 'MANIFEST_URL', value: params.MANIFEST_URL),
+            string(name: 'PIPELINE_BRANCH', value: params.PIPELINE_BRANCH)
+        ]
 }
