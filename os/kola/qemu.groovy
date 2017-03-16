@@ -95,17 +95,8 @@ mkdir -p tmp
                           --json-key="${GOOGLE_APPLICATION_CREDENTIALS}" \
                           --verify-key="${GPG_VERIFY_KEY}" \
                           --cache-dir=./tmp \
-                          --platform=qemu
+                          --platform=qemu_uefi
 enter lbunzip2 -k -f /mnt/host/source/tmp/coreos_production_image.bin.bz2
-
-bios=bios-256k.bin
-if [[ "${BOARD}" == arm64* ]]; then
-  script setup_board --board=${BOARD} \
-                     --getbinpkgver="${COREOS_VERSION}" \
-                     --regen_configs_only
-  enter "emerge-${BOARD}" --nodeps -qugKN sys-firmware/edk2-armvirt
-  bios="/build/${BOARD}/usr/share/edk2-armvirt/bios.bin"
-fi
 
 # copy all of the latest mantle binaries into the chroot
 sudo cp -t chroot/usr/lib/kola/arm64 bin/arm64/*
@@ -114,7 +105,7 @@ sudo cp -t chroot/usr/bin bin/[b-z]*
 
 enter sudo timeout --signal=SIGQUIT 60m kola run --board="${BOARD}" \
                      --parallel=2 \
-                     --qemu-bios="$bios" \
+                     --qemu-bios="/mnt/host/source/tmp/coreos_production_qemu_uefi_efi_code.fd" \
                      --qemu-image="/mnt/host/source/tmp/coreos_production_image.bin" \
                      --tapfile="/mnt/host/source/tmp/${JOB_NAME##*/}.tap"
 
