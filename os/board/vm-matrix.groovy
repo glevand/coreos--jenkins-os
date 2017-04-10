@@ -135,7 +135,9 @@ sudo rm -rf tmp
 # build may not be started without a ref value
 [[ -n "${MANIFEST_REF#refs/tags/}" ]]
 
-./bin/cork update --create --downgrade-replace --verify --verbose \
+CORK=/home/jenkins/coreos--mantle/bin/cork
+
+${CORK} update --create --downgrade-replace --verify --verbose \
                   --manifest-url "${MANIFEST_URL}" \
                   --manifest-branch "${MANIFEST_REF}" \
                   --manifest-name "${MANIFEST_NAME}"
@@ -148,7 +150,7 @@ else
 fi
 
 enter() {
-  ./bin/cork enter --experimental -- env \
+  ${CORK} enter --experimental -- env \
     COREOS_DEV_BUILDS="http://storage.googleapis.com/${DEV_BUILDS_ROOT}" \
     "$@"
 }
@@ -177,11 +179,12 @@ else
 fi
 
 mkdir -p src tmp
-./bin/cork download-image --root="${root}/boards/${BOARD}/${COREOS_VERSION}" \
+${CORK} download-image --root="${root}/boards/${BOARD}/${COREOS_VERSION}" \
                           --json-key="${GOOGLE_APPLICATION_CREDENTIALS}" \
                           --verify-key="${GPG_VERIFY_KEY}" \
                           --cache-dir=./src \
-                          --platform=qemu
+                          --platform=qemu \
+                           --debug
 img=src/coreos_production_image.bin
 if [[ "${img}.bz2" -nt "${img}" ]]; then
   enter lbunzip2 -k -f "/mnt/host/source/${img}.bz2"
