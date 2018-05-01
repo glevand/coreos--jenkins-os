@@ -22,7 +22,7 @@
      * manifest job, when reusing build numbers would cause conflicting
      * branch names in the manifest-builds repository.
      */
-    "BUILD_ID_PREFIX": "jenkins2-",
+    "BUILD_ID_PREFIX": "jenkins-",
 
     /*
      * The manifest-builds repository holds the manifest files for each
@@ -31,10 +31,10 @@
      * for cloning does not need to be over SSH if it is public, and in
      * that case, its credentials ID can be omitted or left blank.
      */
-    "BUILDS_CLONE_URL": "https://github.com/coreos/manifest-builds.git",
+    "BUILDS_CLONE_URL": "https://github.com/glevand/manifest-builds.git",
     "BUILDS_CLONE_CREDS": "",
-    "BUILDS_PUSH_URL": "ssh://git@github.com/coreos/manifest-builds.git",
-    "BUILDS_PUSH_CREDS": "3d4319c2-bca1-47c8-a483-2f355c249e30",
+    "BUILDS_PUSH_URL": "ssh://git@github.com/glevand/manifest-builds.git",
+    "BUILDS_PUSH_CREDS": "MANIFEST_BUILDS_KEY",
 
     /*
      * DigitalOcean credentials are a secret file in the format expected
@@ -46,8 +46,8 @@
      * When creating build commits in the manifest-builds repository,
      * these values will be used for the author and committer.
      */
-    "GIT_AUTHOR_EMAIL": "jenkins@jenkins-os.prod.coreos.systems",
-    "GIT_AUTHOR_NAME": "CoreOS Jenkins",
+    "GIT_AUTHOR_EMAIL": "jenkins@build-master",
+    "GIT_AUTHOR_NAME": "Jenkins",
 
     /*
      * The generated images must have a default update group.
@@ -60,17 +60,17 @@
      * binary packages and the SDK image may use a different storage
      * location than the final OS images.
      */
-    "GS_DEVEL_ROOT": "gs://builds.developer.core-os.net",
-    "GS_DEVEL_CREDS": "jenkins-coreos-systems-write-5df31bf86df3.json",
-    "GS_RELEASE_DOWNLOAD_ROOT": "gs://builds.developer.core-os.net",
-    "GS_RELEASE_ROOT": "gs://builds.developer.core-os.net",
-    "GS_RELEASE_CREDS": "jenkins-coreos-systems-write-5df31bf86df3.json",
+    "GS_DEVEL_ROOT": "gs://glevand-dev-builds",
+    "GS_DEVEL_CREDS": "GOOGLE_APPLICATION_CREDENTIALS",
+    "GS_RELEASE_DOWNLOAD_ROOT": "gs://glevand-dev-builds",
+    "GS_RELEASE_ROOT": "gs://glevand-dev-builds",
+    "GS_RELEASE_CREDS": "GOOGLE_APPLICATION_CREDENTIALS",
 
     /*
      * This is the URL cloned by the os/manifest job to read the base
      * manifest files that define the OS build.
      */
-    "MANIFEST_URL": "https://github.com/coreos/manifest.git",
+    "MANIFEST_URL": "https://github.com/glevand/coreos--manifest.git",
 
     /*
      * Packet credentials are secret text with permission to run kola
@@ -85,8 +85,8 @@
      * credentials ID should point to the private key file to be used,
      * and the e-mail address identifies it to the GPG command.
      */
-    "SIGNING_CREDS": "e9f1dec5-8892-4bac-909d-a6378cd87b1d",
-    "SIGNING_USER": "ct-automation-os@redhat.com",
+    "SIGNING_CREDS": "GPG_SECRET_KEY_FILE",
+    "SIGNING_USER": "jenkins@build-master",
 
     /*
      * The torcx manifests specify URLs from which to download torcx
@@ -95,7 +95,7 @@
      * upload and download packages during the build.
      */
     "TORCX_PUBLIC_DOWNLOAD_ROOT": "http://builds.developer.core-os.net/torcx",
-    "TORCX_ROOT": "gs://builds.developer.core-os.net/torcx",
+    "TORCX_ROOT": "gs://glevand-dev-builds/torcx",
 
     /*
      * A GPG keyring must be given to verify signed objects throughout
@@ -113,5 +113,56 @@
      * the name of the artifact including any leading path component,
      * which is taken from the last successful build.
      */
-    "VERIFY_KEYRING": "artifact:/os/keyring:keyring.asc",
+    "VERIFY_KEYRING": "
+-----BEGIN PGP PUBLIC KEY BLOCK-----
+
+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
+=sWq3
+-----END PGP PUBLIC KEY BLOCK-----
+",
 }
