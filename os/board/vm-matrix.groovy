@@ -4,6 +4,9 @@ properties([
     buildDiscarder(logRotator(daysToKeepStr: '30', numToKeepStr: '50')),
 
     parameters([
+        booleanParam(name: 'RUN_CLOUD_TESTS',
+               defaultValue: false,
+               description: 'Run kola tests on cloud providors.'),
         string(name: 'AWS_REGION',
                defaultValue: 'us-west-2',
                description: 'AWS region to use for AMIs and testing'),
@@ -105,7 +108,7 @@ used to verify signed files and Git tags'''),
 
 /* Define downstream testing/prerelease builds for specific formats.  */
 def downstreams = [
-    'ami_vmdk': { if (params.BOARD == 'amd64-usr')
+    'ami_vmdk': { if (params.RUN_CLOUD_TESTS == true && params.BOARD == 'amd64-usr')
         build job: '../prerelease/aws', wait: false, parameters: [
             string(name: 'AWS_REGION', value: params.AWS_REGION),
             credentials(name: 'AWS_RELEASE_CREDS', value: params.AWS_RELEASE_CREDS),
@@ -118,7 +121,7 @@ def downstreams = [
             string(name: 'PIPELINE_BRANCH', value: params.PIPELINE_BRANCH)
         ]
     },
-    'azure': { if (params.BOARD == 'amd64-usr' && params.COREOS_OFFICIAL == '1')
+    'azure': { if (params.RUN_CLOUD_TESTS == true && params.BOARD == 'amd64-usr' && params.COREOS_OFFICIAL == '1')
         build job: '../prerelease/azure', wait: false, parameters: [
             credentials(name: 'AZURE_CREDS', value: params.AZURE_CREDS),
             credentials(name: 'DOWNLOAD_CREDS', value: params.GS_RELEASE_CREDS),
@@ -128,7 +131,7 @@ def downstreams = [
             string(name: 'PIPELINE_BRANCH', value: params.PIPELINE_BRANCH)
         ]
     },
-    'digitalocean': { if (params.BOARD == 'amd64-usr')
+    'digitalocean': { if (params.RUN_CLOUD_TESTS == true && params.BOARD == 'amd64-usr')
         build job: '../kola/do', wait: false, parameters: [
             string(name: 'BOARD', value: params.BOARD),
             credentials(name: 'BUILDS_CLONE_CREDS', value: params.BUILDS_CLONE_CREDS),
@@ -143,7 +146,7 @@ def downstreams = [
             string(name: 'PIPELINE_BRANCH', value: params.PIPELINE_BRANCH)
         ]
     },
-    'gce': { if (params.BOARD == 'amd64-usr')
+    'gce': { if (params.RUN_CLOUD_TESTS == true && params.BOARD == 'amd64-usr')
         build job: '../kola/gce', wait: false, parameters: [
             credentials(name: 'GS_RELEASE_CREDS', value: params.GS_RELEASE_CREDS),
             string(name: 'GS_RELEASE_ROOT', value: params.GS_RELEASE_ROOT),
@@ -152,7 +155,7 @@ def downstreams = [
             string(name: 'PIPELINE_BRANCH', value: params.PIPELINE_BRANCH)
         ]
     },
-    'packet': { if (params.BOARD == 'amd64-usr')
+    'packet': { if (params.RUN_CLOUD_TESTS == true && params.BOARD == 'amd64-usr')
         build job: '../kola/packet', wait: false, parameters: [
             string(name: 'BOARD', value: params.BOARD),
             credentials(name: 'BUILDS_CLONE_CREDS', value: params.BUILDS_CLONE_CREDS),
