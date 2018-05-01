@@ -95,6 +95,8 @@ trap 'rm -rf "${GNUPGHOME}" credentials.json' EXIT
 mkdir --mode=0700 "${GNUPGHOME}"
 gpg --import verify.asc
 
+find bin -type f -exec chmod +x {} \\;
+
 bin/cork update \
     --create --downgrade-replace --verify --verify-signature --verbose \
     --force-sync \

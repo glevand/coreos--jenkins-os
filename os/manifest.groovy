@@ -185,6 +185,8 @@ then
         COREOS_BUILD_ID="${BUILD_ID_PREFIX}${MANIFEST_BRANCH}+local-${BUILD_NUMBER}"
 fi
 
+find bin -type f -exec chmod +x {} \\;
+
 # Initialize an SDK without verifying a manifest tag, since this uses a branch.
 bin/cork update \
     --create --downgrade-replace --verbose --force-sync \

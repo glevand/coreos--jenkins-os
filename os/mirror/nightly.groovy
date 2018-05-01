@@ -31,6 +31,9 @@ node('coreos && amd64 && sudo') {
             file(credentialsId: params.GCS_CREDS, variable: 'GOOGLE_APPLICATION_CREDENTIALS'),
         ]) {
             sh '''#!/bin/bash -ex
+
+find bin -type f -exec chmod +x {} \\;
+
 bin/cork update --create --verbose --force-sync
 bin/cork enter --bind-gpg-agent=false -- \
     /mnt/host/source/src/scripts/update_distfiles --download --upload coreos portage-stable

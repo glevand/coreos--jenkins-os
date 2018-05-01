@@ -49,6 +49,8 @@ rm -rf *.tap _kola_temp*
 
 NAME="jenkins-${JOB_NAME##*/}-${BUILD_NUMBER}"
 
+find bin -type f -exec chmod +x {} \\;
+
 bin/ore gcloud create-image \
     --board="${BOARD}" \
     --family="${NAME}" \

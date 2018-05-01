@@ -52,6 +52,8 @@ trap 'sudo rm -f coreos_developer_container.bin*' EXIT
 
 [ -s verify.asc ] && verify_key=--verify-key=verify.asc || verify_key=
 
+find bin -type f -exec chmod +x {} \\;
+
 bin/gangue get \
     --json-key="${GOOGLE_APPLICATION_CREDENTIALS}" \
     --verify=true $verify_key \

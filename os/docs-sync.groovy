@@ -61,6 +61,8 @@ trap 'rm -fr "${GNUPGHOME}"' EXIT
 mkdir --mode=0700 "${GNUPGHOME}"
 gpg --import keyring.asc
 
+find bin -type f -exec chmod +x {} \\;
+
 # Find the most recent alpha version.
 bin/gangue get --json-key=/dev/null \
     gs://alpha.release.core-os.net/amd64-usr/current/version.txt

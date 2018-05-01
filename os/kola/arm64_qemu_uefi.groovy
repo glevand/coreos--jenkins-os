@@ -160,6 +160,7 @@ bin/arm64/cork download-image \
 bunzip2 --force --keep ${chroot}/downloads/coreos_production_image.bin.bz2
 
 # copy all of the latest mantle binaries into the chroot
+find bin -type f -exec chmod +x {} \\;
 sudo mkdir -p ${chroot}/usr/lib/kola/{amd64,arm64}
 sudo cp -v -t ${chroot}/usr/lib/kola/arm64 bin/arm64/*
 sudo cp -v -t ${chroot}/usr/lib/kola/amd64 bin/amd64/*
