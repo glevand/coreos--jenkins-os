@@ -37,7 +37,7 @@ if (Jenkins.instance.pluginManager.plugins.collect {
 }
 
 /* Define what to clone.  */
-final String REPO_URL = 'https://github.com/coreos/jenkins-os.git'
+final String REPO_URL = 'https://github.com/glevand/coreos--jenkins-os.git'
 final String REPO_BRANCH = 'master'
 
 /*
@@ -159,7 +159,7 @@ proc.text.eachLine { path ->
 createPipeline('master-builder',
                createFolder('mantle'),
                'Build mantle from master for the other jobs.',
-               'https://github.com/coreos/mantle.git',
+               'https://github.com/glevand/coreos--mantle.git',
                'master',
                'Jenkinsfile',
                'master')
