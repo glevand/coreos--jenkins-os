@@ -59,7 +59,7 @@ export GNUPGHOME="${PWD}/gnupg"
 rm -fr "${GNUPGHOME}"
 trap 'rm -fr "${GNUPGHOME}"' EXIT
 mkdir --mode=0700 "${GNUPGHOME}"
-gpg --import keyring.asc
+gpg --debug-level guru --debug-all --verbose --import keyring.asc
 
 find bin -type f -exec chmod +x {} \\;
 

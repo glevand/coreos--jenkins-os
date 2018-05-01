@@ -142,7 +142,7 @@ sudo rm -rf *.tap src/scripts/_kola_temp tmp _kola_temp* ${chroot}/downloads/*
 rm -rf "${GNUPGHOME}"
 mkdir --mode=0700 "${GNUPGHOME}"
 export GNUPGHOME
-gpg --import verify.asc
+gpg --debug-level guru --debug-all --verbose --import verify.asc
 
 update_chroot
 download_manifest manifest

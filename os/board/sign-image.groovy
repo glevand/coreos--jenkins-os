@@ -134,7 +134,7 @@ export GNUPGHOME="${PWD}/.gnupg"
 rm -rf "${GNUPGHOME}"
 trap 'rm -rf "${GNUPGHOME}"' EXIT
 mkdir --mode=0700 "${GNUPGHOME}"
-gpg --import verify.asc
+gpg --debug-level guru --debug-all --verbose --import verify.asc
 
 find bin -type f -exec chmod +x {} \\;
 
@@ -160,7 +160,7 @@ source .repo/manifests/version.txt
 export COREOS_BUILD_ID
 
 # Set up GPG for signing uploads.
-gpg --import "${GPG_SECRET_KEY_FILE}"
+gpg --debug-level guru --debug-all --verbose --import "${GPG_SECRET_KEY_FILE}"
 
 kernel=coreos_production_image.vmlinuz
 grub=coreos_production_image.grub

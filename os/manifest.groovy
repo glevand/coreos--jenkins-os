@@ -153,7 +153,7 @@ export GNUPGHOME="${PWD}/.gnupg"
 rm -rf "${GNUPGHOME}"
 trap 'rm -rf "${GNUPGHOME}"' EXIT
 mkdir --mode=0700 "${GNUPGHOME}"
-gpg --import verify.asc
+gpg --debug-level guru --debug-all --verbose --import verify.asc
 
 # Branches are of the form remote-name/branch-name.  Tags are just tag-name.
 # If we have a release tag use it, for branches we need to make a tag.
@@ -210,7 +210,7 @@ COREOS_SDK_VERSION=${COREOS_SDK_VERSION}
 EOF
 
 # Set up GPG for signing tags.
-gpg --import "${GPG_SECRET_KEY_FILE}"
+gpg --debug-level guru --debug-all --verbose --import "${GPG_SECRET_KEY_FILE}"
 
 # Tag a development build manifest.
 git -C manifest add "${COREOS_BUILD_ID}.xml" default.xml release.xml version.txt

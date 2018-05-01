@@ -79,7 +79,7 @@ export GNUPGHOME="${PWD}/.gnupg"
 rm -rf "${GNUPGHOME}"
 trap 'rm -rf "${GNUPGHOME}" credentials.json' EXIT
 mkdir --mode=0700 "${GNUPGHOME}"
-gpg --import verify.asc
+gpg --debug-level guru --debug-all --verbose --import verify.asc
 
 find bin -type f -exec chmod +x {} \\;
 

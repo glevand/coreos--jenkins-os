@@ -128,11 +128,12 @@ node('coreos && amd64 && sudo') {
 [ -d .cache/sdks ] && sudo chown -R "$USER" .cache/sdks
 
 # Set up GPG for verifying tags.
+ls -l verify.asc
 export GNUPGHOME="${PWD}/.gnupg"
 rm -rf "${GNUPGHOME}"
 trap 'rm -rf "${GNUPGHOME}"' EXIT
 mkdir --mode=0700 "${GNUPGHOME}"
-gpg --import verify.asc
+gpg --debug-level guru --debug-all --verbose --import verify.asc
 
 find bin -type f -exec chmod +x {} \\;
 
