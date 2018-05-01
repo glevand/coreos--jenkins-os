@@ -3,8 +3,8 @@
 properties([
     buildDiscarder(logRotator(artifactDaysToKeepStr: '3',
                               artifactNumToKeepStr: '3',
-                              daysToKeepStr: '30',
-                              numToKeepStr: '50')),
+                              daysToKeepStr: '60',
+                              numToKeepStr: '6')),
 
     parameters([
         credentials(credentialType: 'org.jenkinsci.plugins.plaincredentials.impl.FileCredentialsImpl',

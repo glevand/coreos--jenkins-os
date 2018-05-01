@@ -1,7 +1,7 @@
 #!groovy
 
 properties([
-    buildDiscarder(logRotator(daysToKeepStr: '30', numToKeepStr: '50')),
+    buildDiscarder(logRotator(daysToKeepStr: '60', numToKeepStr: '6')),
 
     parameters([
         credentials(credentialType: 'com.cloudbees.jenkins.plugins.sshcredentials.impl.BasicSSHUserPrivateKey',
